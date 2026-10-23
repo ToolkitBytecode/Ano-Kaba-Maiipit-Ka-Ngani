@@ -108,9 +108,10 @@ Toolkit.Defaults = {
     PremiumAction = "Get Premium",
     Discord = "",
 
+    -- Mercenary-style key flow
     GetKeyLink = "",    -- fixed key link. "" = ask Junkie (Junkie.get_key_link)
     -- (AUTO VERIFY is now a toggle button in the GUI. It starts OFF and the user turns it ON.)
-    LoadScript = true,  -- after a valid key: Junkie.load_script(key)
+    LoadScript = true,  -- after a valid key: Junkie.load_script(key) (works without ScriptId, like Merc). Ignored if DefaultScript is set
     WaitForKey = true,  -- Launcher() blocks until a valid key was accepted
     KickOnBan = true,   -- kick the player when Junkie reports HWID_BANNED
 
@@ -1602,7 +1603,10 @@ function Toolkit:Launcher(Options)
         end
 
         local function TrySDK()
-            local Ok, A, B = pcall(Junkie.load_script, Key)
+            -- Junkie docs: load_script() takes no arguments. It reads script_id and
+            -- getgenv().SCRIPT_KEY, so the key must be set before the call.
+            Env.SCRIPT_KEY = Key
+            local Ok, A, B = pcall(Junkie.load_script)
             local Good, Err = Check(Ok, A, B)
             if not Good then
                 LastErr = Err
@@ -2142,7 +2146,9 @@ function Toolkit:CheckKey(Key, Options)
         local LastErr = nil
 
         local function Attempt()
-            local LoadOk, A, B = pcall(Lib.load_script, Key)
+            -- load_script() takes no arguments: it reads script_id and getgenv().SCRIPT_KEY
+            Env.SCRIPT_KEY = Key
+            local LoadOk, A, B = pcall(Lib.load_script)
             if not LoadOk then LastErr = A return false end
             if A == false then LastErr = B or "load_script returned false" return false end
             if type(A) == "table" and (A.success == false or A.error ~= nil) then
