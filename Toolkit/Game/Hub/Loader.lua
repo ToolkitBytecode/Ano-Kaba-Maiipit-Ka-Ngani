@@ -1,5 +1,3 @@
-
-
 local Config = {
     Discord = "https://discord.gg/RQRZ7XkfCy",
     Webhook = "https://discord.com/api/webhooks/1562754643749240942/HU7xje7GbsfR2d_eWfWVSZudPJgHvs_ZhRegvnw0o1rEV8bowjx2lRJdqgMkxvGDeMXE",
