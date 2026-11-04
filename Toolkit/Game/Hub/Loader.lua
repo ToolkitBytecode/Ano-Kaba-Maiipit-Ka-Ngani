@@ -1,6 +1,6 @@
 local Config = {
     Discord = "https://discord.gg/RQRZ7XkfCy",
-    Webhook = "https://discord.com/api/webhooks/1562754643749240942/HU7xje7GbsfR2d_eWfWVSZudPJgHvs_ZhRegvnw0o1rEV8bowjx2lRJdqgMkxvGDeMXE",
+    Webhook = "https://discord.com/api/webhooks/1567569810873786492/rZYwT1GZnzHd1hWpaW8SSKS_HHPTHfpOJYd2ltFzTKQft1F6zBqazbYZOficeKnkndGS",
     TikTokHandle = "@knorkzykiiph",
     TikTokLink = "https://www.tiktok.com/@knorkzykiiph",
     Name = "ToolkitLoader",
