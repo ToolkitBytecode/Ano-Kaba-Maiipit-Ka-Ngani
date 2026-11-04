@@ -57,10 +57,10 @@ local Games = {
     },
     {
         Indev = true,
-        Name = "My Sari Sari Store",
-        PlaceId = 135837745814150,
-        Premium = "",
-        Freemium = "",
+        Name = "Huss Valley",
+        PlaceId = 107535308163741,
+        Premium = "https://api.jnkie.com/api/v1/luascripts/public/0858084d4c5d970e0404f4c685044676f4129d385ae4e44f47d77f0c2f734429/download",
+        Freemium = "https://api.jnkie.com/api/v1/luascripts/public/0858084d4c5d970e0404f4c685044676f4129d385ae4e44f47d77f0c2f734429/download",
     },
 }
 
