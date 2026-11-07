@@ -19,16 +19,17 @@ local Games = {
     {
         Name = "Karinderya",
         PlaceId = 116497287371701,
-        Premium = "https://api.jnkie.com/api/v1/luascripts/public/38b2a99318e9f8d5e0a7a541d9408c768d6a0cf0281f1764b281d727cb283ffa/download",
+        Premium = "https://api.jnkie.com/api/v1/luascripts/public/51f8541bf425b9feb765caaa9364b1a2d250436a35732a2f10c30153888ca976/download",
         Freemium = "https://api.jnkie.com/api/v1/luascripts/public/51f8541bf425b9feb765caaa9364b1a2d250436a35732a2f10c30153888ca976/download",
     },
     {
         Name = "Run a Sari Sari Store",
         PlaceId = 104178853788462,
-        Premium = "https://api.jnkie.com/api/v1/luascripts/public/0858084d4c5d970e0404f4c685044676f4129d385ae4e44f47d77f0c2f734429/download",
+        Premium = "https://api.jnkie.com/api/v1/luascripts/public/7f511b650d4aa36024470a6f64e9d4848b18db531585cadbaea6878a94047ee4/download",
         Freemium = "https://api.jnkie.com/api/v1/luascripts/public/7f511b650d4aa36024470a6f64e9d4848b18db531585cadbaea6878a94047ee4/download",
     },
     {
+        Indev = true,
         Name = "Merkado",
         PlaceId = 89720771756768,
         Premium = "https://api.jnkie.com/api/v1/luascripts/public/6365bb4f49aabfb9900065b1722df3d5f7883310d185cb21502e64961eac39e3/download",
@@ -56,7 +57,7 @@ local Games = {
         Freemium = "",
     },
     {
-        Indev = true,
+        Indev = false,
         Name = "Huss Valley",
         PlaceId = 107535308163741,
         Premium = "https://api.jnkie.com/api/v1/luascripts/public/0858084d4c5d970e0404f4c685044676f4129d385ae4e44f47d77f0c2f734429/download",
