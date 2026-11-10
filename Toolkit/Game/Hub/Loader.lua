@@ -1,8 +1,8 @@
 local Config = {
-    Discord = "https://discord.gg/RQRZ7XkfCy",
+    Discord = "https://discord.gg/vcpQ4Myyw",
     Webhook = "https://discord.com/api/webhooks/1567569810873786492/rZYwT1GZnzHd1hWpaW8SSKS_HHPTHfpOJYd2ltFzTKQft1F6zBqazbYZOficeKnkndGS",
-    TikTokHandle = "@knorkzykiiph",
-    TikTokLink = "https://www.tiktok.com/@knorkzykiiph",
+    TikTokHandle = "discordbanned",
+    TikTokLink = "soon",
     Name = "ToolkitLoader",
     Tagline = "Access Beyond Ordinary",
     Version = "v2.6",
@@ -13,6 +13,8 @@ local Config = {
     IntroDelayMax = 1.4,
     LoadTimeout = 8,
     IntroWatchdog = 7,
+    Status = false, -- true = normal | false = Maintenance mode
+    OwnerMessage = "Please wait while I fix and update the issue. For the meantime, please join our Discord below.",
 }
 
 local Games = {
@@ -1444,6 +1446,7 @@ local function DestroyLauncher()
 end
 
 local function ExecuteScript(URL)
+    if not Config.Status then return end
     if Busy or Destroyed or not SelectedGame or not URL or URL == "" then return end
 
     Busy = true
@@ -2044,9 +2047,157 @@ Connect(UserInputService.InputChanged, function(Input)
     end
 end)
 
+-- Maintenance screen (shown when Config.Status = false)
+local MaintenancePage
+
+local function ShowMaintenance()
+    if MaintenancePage or Destroyed then return end
+
+    -- Same page system as Home / Versions: same area, same 16px margins, same card style
+    local Page = New("Frame", {
+        Name = "Maintenance",
+        Size = UDim2.fromScale(1, 1),
+        Position = UDim2.fromScale(1, 0),
+        BackgroundTransparency = 1,
+    }, Pages)
+    MaintenancePage = Page
+
+    -- Header card (same size/layout as the selected-game header card)
+    local Header = New("Frame", {
+        Position = UDim2.fromOffset(16, 4),
+        Size = UDim2.new(1, -32, 0, 78),
+        BackgroundColor3 = Theme.Card,
+        BorderSizePixel = 0,
+    }, Page)
+    Corner(Header, 14)
+    Stroke(Header, Theme.Stroke, 1.2)
+
+    local IconBox = New("Frame", {
+        Position = UDim2.fromOffset(8, 7),
+        Size = UDim2.fromOffset(64, 64),
+        BackgroundColor3 = Theme.Bg2,
+        BorderSizePixel = 0,
+    }, Header)
+    Corner(IconBox, 12)
+    Stroke(IconBox, Theme.Amber, 1.5)
+    New("TextLabel", {
+        Size = UDim2.fromScale(1, 1),
+        BackgroundTransparency = 1,
+        Text = "!",
+        TextColor3 = Theme.Amber,
+        TextSize = 30,
+        Font = Enum.Font.GothamBlack,
+    }, IconBox)
+
+    New("TextLabel", {
+        Position = UDim2.fromOffset(82, 12),
+        Size = UDim2.new(1, -92, 0, 24),
+        BackgroundTransparency = 1,
+        Text = "Toolkit Maintenance",
+        TextColor3 = Theme.Text,
+        TextSize = 18,
+        Font = Enum.Font.GothamBlack,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextTruncate = Enum.TextTruncate.AtEnd,
+    }, Header)
+
+    New("TextLabel", {
+        Position = UDim2.fromOffset(82, 38),
+        Size = UDim2.new(1, -92, 0, 28),
+        BackgroundTransparency = 1,
+        Text = "The script is being fixed by the owner.",
+        TextColor3 = Theme.Amber,
+        TextSize = 12,
+        Font = Enum.Font.GothamMedium,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextWrapped = true,
+    }, Header)
+
+    -- Message card (fills the space between the header and the button)
+    local MsgCard = New("Frame", {
+        Position = UDim2.fromOffset(16, 92),
+        Size = UDim2.new(1, -32, 1, -92 - 48),
+        BackgroundColor3 = Theme.Card,
+        BorderSizePixel = 0,
+    }, Page)
+    Corner(MsgCard, 14)
+    Stroke(MsgCard, Theme.Stroke, 1.2)
+
+    New("TextLabel", {
+        Position = UDim2.fromOffset(14, 12),
+        Size = UDim2.new(1, -28, 0, 12),
+        BackgroundTransparency = 1,
+        Text = "MESSAGE BY OWNER",
+        TextColor3 = Theme.Muted,
+        TextSize = 10,
+        Font = Enum.Font.GothamBold,
+        TextXAlignment = Enum.TextXAlignment.Left,
+    }, MsgCard)
+
+    New("TextLabel", {
+        Position = UDim2.fromOffset(14, 32),
+        Size = UDim2.new(1, -28, 1, -64),
+        BackgroundTransparency = 1,
+        Text = Config.OwnerMessage,
+        TextColor3 = Theme.Text,
+        TextSize = 13,
+        Font = Enum.Font.GothamBold,
+        TextWrapped = true,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Top,
+    }, MsgCard)
+
+    New("TextLabel", {
+        AnchorPoint = Vector2.new(0, 1),
+        Position = UDim2.new(0, 14, 1, -12),
+        Size = UDim2.new(1, -28, 0, 14),
+        BackgroundTransparency = 1,
+        Text = Config.Discord,
+        TextColor3 = Theme.Violet,
+        TextSize = 11,
+        Font = Enum.Font.GothamBold,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextTruncate = Enum.TextTruncate.AtEnd,
+    }, MsgCard)
+
+    -- Same Discord button style as the home page, full width
+    local MaintDiscord = GradButton(
+        Page, "JOIN OUR DISCORD",
+        UDim2.new(1, -32, 0, 38), UDim2.new(0, 16, 1, -42),
+        Theme.Blurple, Theme.Violet, 12
+    )
+
+    local MaintBusy = false
+    MaintDiscord.MouseButton1Click:Connect(function()
+        if MaintBusy or Destroyed then return end
+        MaintBusy = true
+        if CopyText(Config.Discord) then
+            SetStatus("Discord invite copied!", Theme.Green)
+            MaintDiscord.Text = "LINK COPIED!"
+        else
+            SetStatus("Unable to copy Discord invite.", Theme.Red)
+            MaintDiscord.Text = "COPY FAILED"
+        end
+        After(1.4, function()
+            if not Destroyed then
+                MaintDiscord.Text = "JOIN OUR DISCORD"
+                MaintBusy = false
+            end
+        end)
+    end)
+
+    -- Swap pages the same way GoTo() does
+    HomePage.Visible = false
+    VersionPage.Visible = false
+    SetStatus("Under maintenance  •  Please wait for the update", Theme.Amber)
+    Tween(Page, 0.45, { Position = UDim2.fromScale(0, 0) })
+end
+
 local Intro = nil
 
 local function TriggerFetchAfterIntro()
+    if not Config.Status then return end
+
     for Index, Game in ipairs(Games) do
         local UI = Entries[Game]
         if UI then
@@ -2064,6 +2215,10 @@ local function FinishSplash()
     SplashAlive = false
     SplashParticles = {}
     pcall(function() Splash:Destroy() end)
+
+    if not Config.Status then
+        ShowMaintenance()
+    end
 end
 
 local Elapsed, AnimAcc = 0, 0
